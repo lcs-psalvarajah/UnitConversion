@@ -13,21 +13,20 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var unitAmount = ""
-    @State private var unitType = 2
-    @State private var convertedUnit = 2
+    @State private var fromUnitType = 2
+    @State private var toUnitType = 2
+    @State private var convertedValue = 2
     
     let unitTypes = [ "Milliliters", "Liters" , "Cups" , "Pints" , "Gallons" ]
-    let unitTypesTwo = [ "Milliliters", "Liters" , "Cups" , "Pints" , "Gallons" ]
-
     
     var outputValue: Double {
         let unitValue = Double(unitAmount) ?? 0
-        let firstUnitSelection = Double(unitTypes[unitType])
-    
+        let firstUnitSelection = Double(unitTypes[fromUnitType])
+        
         
         let unitLiters = Measurement(value: unitValue, unit: UnitVolume.liters)
         let litersToML = unitLiters.converted(to: .milliliters)
-       
+        
         let unitCups = Measurement(value: unitValue, unit: UnitVolume.cups)
         let cupsToML = unitCups.converted(to: .milliliters)
         
@@ -44,16 +43,6 @@ struct ContentView: View {
         return 0
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     var body: some View {
         NavigationView {
             Form {
@@ -62,8 +51,7 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                 }
                 Section (header: Text("What is your original amount unit?")){
-                    Picker("Type of Unit", selection:
-                            $unitType) {
+                    Picker("Type of Unit", selection: $toUnitType) {
                         ForEach (0 ..< unitTypes.count) {
                             Text("\(self.unitTypes[$0])")
                         }
@@ -71,17 +59,16 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 Section (header: Text("What unit do you want to convert to?")){
-                    Picker("Type of Unit", selection:
-                            $unitType) {
-                        ForEach (0 ..< unitTypesTwo.count) {
-                            Text("\(self.unitTypesTwo[$0])")
+                    Picker("Type of Unit", selection: $fromUnitType) {
+                        ForEach (0 ..< unitTypes.count) {
+                            Text("\(self.unitTypes[$0])")
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 // the text will change to someing once the math is done
                 Section (header: Text("Converted Value")){
-                    Text ("\(convertedUnit)")
+                    Text ("\(convertedValue)")
                 }
             }
             .navigationBarTitle("Volume Conversion", displayMode: .inline)

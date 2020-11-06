@@ -21,23 +21,64 @@ struct ContentView: View {
     
     var outputValue: Double {
         let unitValue = Double(unitAmount) ?? 0
-        let firstUnitSelection = Double(unitTypes[fromUnitType])
+     
+        var milliliterConversion = [
+            0: 1,
+            1: 0.001,
+            2: 236.588,
+            3: 473.176,
+            4: 3785.41
+            
+        ]
         
+//        var litersConversion = [
+//            "Milliliters": 0.001,
+//            "Liters": 1,
+//            "Cups": 0.236588,
+//            "Pints": 0.473176,
+//            "Gallons": 3.78541
+//        ]
+//
+//        var cupsConversion = [
+//            "Mililiters": 0.00422675,
+//            "Liters": 4.22675,
+//            "Pints": 2,
+//            "Gallons": 16
+//        ]
+//
+//        var pintsConversion = [
+//            "Milliliters": 0.00211338,
+//            "Liters": 2.11338,
+//            "Cups": 0.5,
+//            "Gallons": 8
+//        ]
         
-        let unitLiters = Measurement(value: unitValue, unit: UnitVolume.liters)
-        let litersToML = unitLiters.converted(to: .milliliters)
+        var gallonsConversion = [
+            "Mililiters": 0.000264172,
+            "Liters": 0.264172,
+            "Cups": 0.0625,
+            "Pints": 0.125
+        ]
         
-        let unitCups = Measurement(value: unitValue, unit: UnitVolume.cups)
-        let cupsToML = unitCups.converted(to: .milliliters)
+//        var outputValue = Double(fromUnitType[unitAmount])
         
-        let unitPints = Measurement(value: unitValue, unit: UnitVolume.pints)
-        let pintsToML = unitPints.converted(to: .milliliters)
+        // figure out what unity they're coming from
         
-        let unitGallons = Measurement(value: unitValue, unit: UnitVolume.gallons)
-        let gallonsToML = unitGallons.converted(to: .milliliters)
-        
-        
-        
+        switch fromUnitType {
+        case 0:
+            // from ml
+            return unitValue * milliliterConversion[toUnitType]!
+//        case 1:
+//            // from L
+//        case 2:
+//            // from Cups
+//        case 3:
+//            // from Pints
+//        case 4:
+//            // from Gallons
+        default:
+            break
+        }
         
         
         return 0
@@ -51,7 +92,7 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                 }
                 Section (header: Text("What is your original amount unit?")){
-                    Picker("Type of Unit", selection: $toUnitType) {
+                    Picker("Type of Unit", selection: $fromUnitType) {
                         ForEach (0 ..< unitTypes.count) {
                             Text("\(self.unitTypes[$0])")
                         }
@@ -59,7 +100,7 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 Section (header: Text("What unit do you want to convert to?")){
-                    Picker("Type of Unit", selection: $fromUnitType) {
+                    Picker("Type of Unit", selection: $toUnitType) {
                         ForEach (0 ..< unitTypes.count) {
                             Text("\(self.unitTypes[$0])")
                         }
@@ -68,7 +109,7 @@ struct ContentView: View {
                 }
                 // the text will change to someing once the math is done
                 Section (header: Text("Converted Value")){
-                    Text ("\(convertedValue)")
+                    Text ("\(outputValue)")
                 }
             }
             .navigationBarTitle("Volume Conversion", displayMode: .inline)

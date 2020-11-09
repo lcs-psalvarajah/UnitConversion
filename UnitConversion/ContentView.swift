@@ -22,42 +22,44 @@ struct ContentView: View {
     var outputValue: Double {
         let unitValue = Double(unitAmount) ?? 0
      
-        var milliliterConversion = [
+        let milliliterConversion = [
             0: 1,
             1: 0.001,
-            2: 236.588,
-            3: 473.176,
-            4: 3785.41
-            
+            2: 0.00422675,
+            3: 0.00211338,
+            4: 0.000264172
         ]
         
-//        var litersConversion = [
-//            "Milliliters": 0.001,
-//            "Liters": 1,
-//            "Cups": 0.236588,
-//            "Pints": 0.473176,
-//            "Gallons": 3.78541
-//        ]
-//
-//        var cupsConversion = [
-//            "Mililiters": 0.00422675,
-//            "Liters": 4.22675,
-//            "Pints": 2,
-//            "Gallons": 16
-//        ]
-//
-//        var pintsConversion = [
-//            "Milliliters": 0.00211338,
-//            "Liters": 2.11338,
-//            "Cups": 0.5,
-//            "Gallons": 8
-//        ]
+        let litersConversion = [
+            0: 1000,
+            1: 1,
+            2: 4.22675,
+            3: 2.11338,
+            4: 0.264172
+        ]
+
+        let cupsConversion = [
+            0: 236.588,
+            1: 0.236588,
+            2: 1,
+            3: 0.5,
+            4: 0.0625
+        ]
+
+        let pintsConversion = [
+            0: 473.176,
+            1: 0.473176,
+            2: 2,
+            3: 1,
+            4: 0.125
+        ]
         
-        var gallonsConversion = [
-            "Mililiters": 0.000264172,
-            "Liters": 0.264172,
-            "Cups": 0.0625,
-            "Pints": 0.125
+        let gallonsConversion = [
+            0: 3785.41,
+            1: 3.78541,
+            2: 16,
+            3: 8,
+            4: 1
         ]
         
 //        var outputValue = Double(fromUnitType[unitAmount])
@@ -68,14 +70,18 @@ struct ContentView: View {
         case 0:
             // from ml
             return unitValue * milliliterConversion[toUnitType]!
-//        case 1:
-//            // from L
-//        case 2:
-//            // from Cups
-//        case 3:
-//            // from Pints
-//        case 4:
-//            // from Gallons
+        case 1:
+            // from L
+            return unitValue * litersConversion[toUnitType]!
+        case 2:
+            // from Cups
+            return unitValue * cupsConversion[toUnitType]!
+        case 3:
+            // from Pints
+            return unitValue * pintsConversion[toUnitType]!
+        case 4:
+            // from Gallons
+            return unitValue * gallonsConversion[toUnitType]!
         default:
             break
         }
@@ -109,7 +115,7 @@ struct ContentView: View {
                 }
                 // the text will change to someing once the math is done
                 Section (header: Text("Converted Value")){
-                    Text ("\(outputValue)")
+                    Text ("\(outputValue, specifier: "%.2f")")
                 }
             }
             .navigationBarTitle("Volume Conversion", displayMode: .inline)

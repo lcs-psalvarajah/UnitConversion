@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var toUnitType = 2
     @State private var convertedValue = 2
     
-    let unitTypes = [ "Milliliters", "Liters" , "Cups" , "Pints" , "Gallons" ]
+    let unitTypes = [ "Milliliters", "Litres" , "Cups" , "Pints" , "Gallons" ]
     
     var outputValue: Double {
         let unitValue = Double(unitAmount) ?? 0
@@ -30,7 +30,7 @@ struct ContentView: View {
             4: 0.000264172
         ]
         
-        let litersConversion = [
+        let litresConversion = [
             0: 1000,
             1: 1,
             2: 4.22675,
@@ -72,7 +72,7 @@ struct ContentView: View {
             return unitValue * milliliterConversion[toUnitType]!
         case 1:
             // from L
-            return unitValue * litersConversion[toUnitType]!
+            return unitValue * litresConversion[toUnitType]!
         case 2:
             // from Cups
             return unitValue * cupsConversion[toUnitType]!
@@ -113,9 +113,11 @@ struct ContentView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
-                // the text will change to someing once the math is done
+                
+                // To include a word from an array into the coding use a [] and it would select it
+                
                 Section (header: Text("Converted Value")){
-                    Text ("\(outputValue, specifier: "%.2f")")
+                    Text ("\(outputValue, specifier: "%.2f") \(unitTypes[toUnitType])")
                 }
             }
             .navigationBarTitle("Volume Conversion", displayMode: .inline)
